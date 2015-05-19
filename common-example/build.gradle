@@ -1,0 +1,80 @@
+/*
+ * This software is licensed under the MIT License.
+ *
+ * Copyright (c) 2015 Geoff M. Granum
+ */
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+
+version = project['project.version']
+group = 'biz.granum.spork'
+
+configurations {
+    provided
+}
+
+
+dependencies {
+    compile project(":common")
+    testCompile "org.testng:testng:${project['versions.testNg']}"
+    testCompile "org.mockito:mockito-core:${project['versions.mockito']}"
+    testCompile "org.hamcrest:hamcrest-all:${project['versions.hamcrest']}"
+}
+
+
+sourceSets {
+    main.compileClasspath += configurations.provided;
+    test.compileClasspath += configurations.provided;
+    test.runtimeClasspath += configurations.provided;
+}
+
+test {
+    // enable TestNG support (default is JUnit)
+    useTestNG()
+    workingDir "${rootProject.rootDir}"
+}
+
+javadoc.classpath = sourceSets.main.compileClasspath;
+javadoc.options({
+    addStringOption('tag', 'todo')
+})
+
+jar {
+    baseName = "spork-common-example"
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+
+publishing {
+    publications {
+        archives(MavenPublication) {
+            artifact jar
+            artifact sourcesJar
+            artifact javadocJar
+        }
+    }
+    repositories {
+        //        maven {
+//            url rootProject["yourRepo.url"]
+//            credentials {
+//                username = rootProject["yourRepo.username"]
+//                password = rootProject["yourRepo.password"]
+//            }
+//        }
+    }
+}

@@ -1,0 +1,92 @@
+###
+#  My standard ignore file. This ignore file does in fact commit the IntelliJ project files as recommended by JetBrains.
+###
+
+# Cruft
+*.class
+*.tmp
+*.mwb.bak
+
+
+# Project Configuration
+client-web/src/main/webapp/lib/
+client-web/src/main/webapp/resources/icons
+
+
+# Intellij Configuration
+.idea/libraries/
+.idea/dictionaries/
+.idea/scopes/
+.idea/ant.xml
+.idea/artifacts/Gradle___*.xml
+.idea/inspectionProfiles/SQL_Checks.xml
+.idea/compiler.xml
+.idea/dataSources.ids
+.idea/dataSources.xml
+.idea/encodings.xml
+.idea/gradle.xml
+.idea/gradle_settings2_config.xml
+.idea/jsLibraryMappings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/sqldialects.xml
+
+# ActiveMQ
+activemq-data/
+
+# Gradle Configuration
+.gradle/
+
+#Build dirs
+build/
+deploy/
+target/
+out/
+temp/
+tmp/
+
+
+#### Below from http://help.github.com/ignore-files/ ####
+###################################################
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.war
+*.ear
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sqlite
+*.h2.db
+
+# OS generated files #
+######################
+.DS_Store*
+ehthumbs.db
+#Icon?
+Thumbs.db
+
+
+#### Local property override files ####
+*.local.properties
+
+
+#### Required jar files (do NOT ignore; we do want these committed)  ####
+# Gradle wrapper
+!gradle-wrapper.jar
+
+# Java Cryptographic Extensions - allow them if present.
+!local_policy.jar
+!US_export_policy.jar
