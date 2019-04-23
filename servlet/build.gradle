@@ -1,11 +1,13 @@
 /*
  * This software is licensed under the MIT License.
  *
- * Copyright (c) 2015 Geoff M. Granum
+ * Copyright (c) 2019 Geoff M. Granum
  */
 
-apply plugin: 'java'
-apply plugin: 'maven-publish'
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
 
 
 version = project['project.version']
@@ -17,6 +19,9 @@ configurations {
 
 
 dependencies {
+
+    implementation project(":common")
+    
     implementation "commons-io:commons-io:${project['versions.commonsIo']}"
     implementation "org.apache.commons:commons-lang3:${project['versions.commonsLang3']}"
     implementation "org.apache.httpcomponents:httpcore:${project['versions.httpcore']}"
@@ -30,7 +35,20 @@ dependencies {
     runtime "org.apache.logging.log4j:log4j-jcl:${project['versions.log4j']}"
 
     implementation "com.fasterxml.jackson.core:jackson-databind:${project['versions.jackson']}"
-    implementation "org.hibernate.validator:hibernate-validator:${project['versions.hibernateValidator']}"
+    implementation "org.hibernate:hibernate-validator:${project['versions.hibernateValidator']}"
+
+
+    implementation  "com.google.inject.extensions:guice-servlet:${project['versions.guice']}"
+    implementation ("org.jboss.resteasy:resteasy-jaxrs:${project['versions.resteasy']}")
+    implementation  "org.jboss.resteasy:resteasy-jackson2-provider:${project['versions.resteasy']}"
+    implementation ("org.jboss.resteasy:resteasy-guice:${project['versions.resteasy']}") {
+        exclude module: 'guice'
+    }
+
+    implementation ("org.jboss.resteasy:resteasy-client:${project['versions.resteasy']}")
+    compileOnly "javax.servlet:javax.servlet-api:3.1.0"
+
+
 
     testImplementation "org.testng:testng:${project['versions.testNg']}"
     testImplementation "org.mockito:mockito-core:${project['versions.mockito']}"
@@ -49,7 +67,7 @@ javadoc.options({
 })
 
 jar {
-    baseName = "spork-common"
+    baseName = "spork-servlet"
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

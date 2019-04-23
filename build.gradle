@@ -12,7 +12,8 @@ wrapper {
     gradleVersion = "5.3.1"
 }
 
-apply plugin: BuildProps;
+apply plugin: BuildProps
+
 
 buildProps.source("${project.rootDir}/gradle.local.properties");
 buildProps.required("build.env");
@@ -37,6 +38,8 @@ subprojects {
                     "commons-lang:commons-lang3:${project['versions.commonsLang3']}",
                     "commons-io:commons-io:${project['versions.commonsIo']}",
                     "org.slf4j:slf4j-api:${project['versions.slf4j']}",
+                    "com.fasterxml.jackson.core:jackson-annotations:${project['versions.jackson']}",
+                    "com.fasterxml.jackson.core:jackson-databind:${project['versions.jackson']}",
             )
             //  This would replace existing forced modules with new ones:
             //forcedModules = ['asm:asm-all:3.3.1']
