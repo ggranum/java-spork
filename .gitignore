@@ -1,40 +1,43 @@
-###
-#  My standard ignore file. This ignore file does in fact commit the IntelliJ project files as recommended by JetBrains.
-###
+#######
+#
+# A fairly generic template ignore file for Java projects. Shares the sharable IntelliJ project files if present.
+# Supports Gradle Wrapper.
+#####
+
+# Local files, etc
+*.local.*
+local.properites
 
 # Cruft
 *.class
 *.tmp
 *.mwb.bak
-
-
-# Project Configuration
-client-web/src/main/webapp/lib/
-client-web/src/main/webapp/resources/icons
-
+coverage-error.log
 
 # Intellij Configuration
-.idea/libraries/
-.idea/dictionaries/
-.idea/scopes/
-.idea/ant.xml
-.idea/artifacts/Gradle___*.xml
-.idea/inspectionProfiles/SQL_Checks.xml
-.idea/compiler.xml
-.idea/dataSources.ids
-.idea/dataSources.xml
-.idea/encodings.xml
-.idea/gradle.xml
-.idea/gradle_settings2_config.xml
-.idea/jsLibraryMappings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/vcs.xml
-.idea/workspace.xml
-.idea/sqldialects.xml
+.idea/*.xml
+*.iml
+.idea/artifacts/
+.idea/copyright/*.xml
+.idea/dictionaries/*.xml
+.idea/inspectionProfiles/*.xml
+.idea/libraries/*.xml
+.idea/scopes/*.xml
 
-# ActiveMQ
-activemq-data/
+### Intellij Keepers such as inspections and formatting styles. "Un-ignore" by specific inclusion, due to potential
+### for cruft (e.g. named dictionaries)
+!.idea/.name
+!.idea/checkstyle-idea.xml
+!.idea/compiler.xml
+!.idea/encodings.xml
+#!.idea/jsLibraryMappings.xml
+#!.idea/misc.xml
+!.idea/modules.xml
+
+!.idea/copyright/profiles_settings.xml
+!.idea/inspectionProfiles/Project_Default.xml
+!.idea/inspectionProfiles/profiles_settings.xml
+
 
 # Gradle Configuration
 .gradle/
@@ -42,11 +45,7 @@ activemq-data/
 #Build dirs
 build/
 deploy/
-target/
 out/
-temp/
-tmp/
-
 
 #### Below from http://help.github.com/ignore-files/ ####
 ###################################################
@@ -78,15 +77,21 @@ ehthumbs.db
 #Icon?
 Thumbs.db
 
-
-#### Local property override files ####
-*.local.properties
-
-
 #### Required jar files (do NOT ignore; we do want these committed)  ####
 # Gradle wrapper
 !gradle-wrapper.jar
 
-# Java Cryptographic Extensions - allow them if present.
+# Certs, key files, password files.
+keystore
+*.cert
+*.crt
+*.pkcs12
+*.key
+keystore.properties
+*.csr
+*.ks
+
+
+# Java Cryptographic Extensions, if needed.
 !local_policy.jar
 !US_export_policy.jar

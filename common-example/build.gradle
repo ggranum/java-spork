@@ -9,7 +9,7 @@ apply plugin: 'maven-publish'
 
 
 version = project['project.version']
-group = 'biz.granum.spork'
+group = 'com.geoffgranum.spork'
 
 configurations {
     provided

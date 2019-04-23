@@ -1,7 +1,9 @@
 # Java-Spork: Random utility classes for Client-Server Java development
 
 ## Use
-The code in this repository is most likely to be more useful if copy-pasted into your own projects and modified accordingly. One day I might add a build that generates a jar or five... but probably not. 
+The code in this repository is most likely to be more useful if copy-pasted into your own projects and modified accordingly. 
+
+As of 2018, you can now use Gradle to point to a Github dependency. See below for more.   
  
 See /common-examples for a demonstration of various toys. 
   
@@ -11,7 +13,7 @@ Compile and run by executing
 ./gradlew clean build
 ```
 
-You can open this project directly in IntelliJ with no need to do a 'project import'.  
+You can open this project directly in IntelliJ with no need to do a 'project import'. The project files that JetBrains recommends be shared are committed to source control.
 
 ## What's here
 
@@ -26,4 +28,4 @@ You can open this project directly in IntelliJ with no need to do a 'project imp
 * Log4j2
 
 ## MIT Licensed
-Do with it what you like. Attribution is great but not required - with the exception of when attribution is being given by me to others.
+Do with it what you like. But don't blame me if it breaks. 

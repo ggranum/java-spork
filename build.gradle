@@ -4,10 +4,12 @@
  * Copyright (c) 2015 Geoff M. Granum
  */
 
-import biz.granum.gradle.BuildProps
+import com.geoffgranum.gradle.BuildProps
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
+
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+    gradleVersion = "5.3.1"
 }
 
 apply plugin: BuildProps;
