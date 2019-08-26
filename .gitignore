@@ -23,6 +23,7 @@ coverage-error.log
 .idea/inspectionProfiles/*.xml
 .idea/libraries/*.xml
 .idea/scopes/*.xml
+.idea/shelf/
 
 ### Intellij Keepers such as inspections and formatting styles. "Un-ignore" by specific inclusion, due to potential
 ### for cruft (e.g. named dictionaries)

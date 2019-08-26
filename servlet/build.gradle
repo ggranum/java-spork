@@ -4,102 +4,136 @@
  * Copyright (c) 2019 Geoff M. Granum
  */
 
+
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'com.jfrog.bintray'
 }
 
-
-version = project['project.version']
+version = rootProject['project.version']
 group = 'com.geoffgranum.spork'
 
-configurations {
-    provided
-}
 
+repositories {
+    maven {
+        url "https://dl.bintray.com/ggranum/spork"
+    }
+}
 
 dependencies {
 
     implementation project(":common")
-    
-    implementation "commons-io:commons-io:${project['versions.commonsIo']}"
-    implementation "org.apache.commons:commons-lang3:${project['versions.commonsLang3']}"
-    implementation "org.apache.httpcomponents:httpcore:${project['versions.httpcore']}"
-    implementation "commons-codec:commons-codec:${project['versions.commonsCodec']}"
 
-    implementation "com.google.guava:guava:${project['versions.guava']}"
-    implementation "com.google.code.findbugs:jsr305:${project['versions.findbugs']}"
+    implementation "commons-io:commons-io:${rootProject['versions.commonsIo']}"
+    implementation "org.apache.commons:commons-lang3:${rootProject['versions.commons-lang3']}"
+    implementation "org.apache.httpcomponents:httpcore:${rootProject['versions.httpcore']}"
+    implementation "commons-codec:commons-codec:${rootProject['versions.commonsCodec']}"
 
-    implementation "org.apache.logging.log4j:log4j-api:${project['versions.log4j']}"
-    runtime "org.apache.logging.log4j:log4j-core:${project['versions.log4j']}"
-    runtime "org.apache.logging.log4j:log4j-jcl:${project['versions.log4j']}"
+    implementation "com.google.guava:guava:${rootProject['versions.guava']}"
+    implementation "com.google.code.findbugs:jsr305:${rootProject['versions.findbugs']}"
 
-    implementation "com.fasterxml.jackson.core:jackson-databind:${project['versions.jackson']}"
-    implementation "org.hibernate:hibernate-validator:${project['versions.hibernateValidator']}"
+    implementation "org.apache.logging.log4j:log4j-api:${rootProject['versions.log4j']}"
+    runtime "org.apache.logging.log4j:log4j-core:${rootProject['versions.log4j']}"
+    runtime "org.apache.logging.log4j:log4j-jcl:${rootProject['versions.log4j']}"
+
+    implementation "com.fasterxml.jackson.core:jackson-databind:${rootProject['versions.jackson']}"
+    // EL manager and CDI Required for hibernate validator versions 5 and newer. Cannot fathom how that decision was accepted. 
+    implementation "org.hibernate:hibernate-validator:${rootProject['versions.hibernateValidator']}",
+            "org.glassfish:javax.el:3.0.1-b09", 
+            "org.hibernate.validator:hibernate-validator-cdi:${rootProject['versions.hibernateValidator']}"
 
 
-    implementation  "com.google.inject.extensions:guice-servlet:${project['versions.guice']}"
-    implementation ("org.jboss.resteasy:resteasy-jaxrs:${project['versions.resteasy']}")
-    implementation  "org.jboss.resteasy:resteasy-jackson2-provider:${project['versions.resteasy']}"
-    implementation ("org.jboss.resteasy:resteasy-guice:${project['versions.resteasy']}") {
+    implementation "com.google.inject.extensions:guice-servlet:${rootProject['versions.guice']}"
+    implementation("org.jboss.resteasy:resteasy-jaxrs:${rootProject['versions.resteasy']}")
+    implementation "org.jboss.resteasy:resteasy-jackson2-provider:${rootProject['versions.resteasy']}"
+    implementation "org.jboss.resteasy:resteasy-jsapi:${rootProject['versions.resteasy']}"
+    implementation("org.jboss.resteasy:resteasy-guice:${rootProject['versions.resteasy']}") {
         exclude module: 'guice'
     }
 
-    implementation ("org.jboss.resteasy:resteasy-client:${project['versions.resteasy']}")
+    
+
+    implementation("org.jboss.resteasy:resteasy-client:${rootProject['versions.resteasy']}")
     compileOnly "javax.servlet:javax.servlet-api:3.1.0"
 
+    implementation "org.eclipse.jetty:jetty-server:${rootProject['versions.jetty']}"
+    implementation "org.eclipse.jetty:jetty-servlet:${rootProject['versions.jetty']}"
 
-
-    testImplementation "org.testng:testng:${project['versions.testNg']}"
-    testImplementation "org.mockito:mockito-core:${project['versions.mockito']}"
-    testImplementation "org.hamcrest:hamcrest-all:${project['versions.hamcrest']}"
+    testImplementation "org.testng:testng:${rootProject['versions.testNg']}"
+    testImplementation "org.mockito:mockito-core:${rootProject['versions.mockito']}"
+    testImplementation "org.hamcrest:hamcrest-all:${rootProject['versions.hamcrest']}"
 }
 
-
-sourceSets {
-    main.compileClasspath += configurations.provided;
-    test.compileClasspath += configurations.provided;
-    test.runtimeClasspath += configurations.provided;
-}
-javadoc.classpath = sourceSets.main.compileClasspath;
 javadoc.options({
     addStringOption('tag', 'todo')
 })
 
 jar {
-    baseName = "spork-servlet"
+    baseName = project.name
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
 
 artifacts {
     archives sourcesJar
-    archives javadocJar
 }
 
 
 publishing {
     publications {
-        archives(MavenPublication) {
-            artifact jar
+        binTrayPublication(MavenPublication) {
+            from components.java
             artifact sourcesJar
-            artifact javadocJar
+            groupId group
+            artifactId project.name
+            version version
+            pom {
+                name = "Spork Servlet"
+                description = "Utilities for building RESTful and JSON client-server applications."
+                url = "git@github.com:ggranum/java-spork"
+                licenses {
+                    license {
+                        name = "MIT"
+                        url = "https://github.com/ggranum/java-spork"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "ggranum"
+                        name = "Geoff Granum"
+                        email = "maven@geoffgranum.com"
+                    }
+                }
+                scm {
+                    connection = "https://github.com/ggranum/java-spork.git"
+                    developerConnection = "git@github.com:ggranum/java-spork.git"
+                    url = "https://github.com/ggranum/java-spork"
+                }
+            }
         }
     }
-    repositories {
-        //        maven {
-//            url rootProject["yourRepo.url"]
-//            credentials {
-//                username = rootProject["yourRepo.username"]
-//                password = rootProject["yourRepo.password"]
-//            }
-//        }
+}
+
+
+bintray {
+    user = project['project.bintray.username']
+    key = project['project.bintray.apiKey']
+    publications = ['binTrayPublication']
+    publish = true
+    pkg {
+        repo = 'spork'
+        name = project.name
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/ggranum/java-spork.git'
+        version {
+            name = version
+            desc = 'Common utility code for client server projects'
+            released = new Date()
+            vcsTag = version
+        }
     }
 }

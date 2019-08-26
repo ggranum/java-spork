@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * If I weren't so lazy this would be called 'Log4JLogger' and I'd have a different class named 'Log' that would
  * be doing something like this: http://bill.burkecentral.com/2012/05/22/write-your-own-logging-abstraction/
- * <p/>
+ *
  * But I am lazy. So this is just a nice central point from which to replace / augment the logging framework
  * if such is ever desired.
  *
@@ -84,11 +84,19 @@ public class Log {
     }
   }
 
+  public static void log(Level level, boolean printStack, String clazz, Throwable t, String msgFormat, Object... args) {
+    if(printStack) {
+      log(level, clazz, t, msgFormat, args);
+    } else {
+      log(level, clazz, msgFormat, args);
+    }
+  }
+
   public static void log(Level level, boolean printStack, Class clazz, Throwable t, String msgFormat, Object... args) {
     if(printStack) {
-      Log.log(level, clazz, t, msgFormat, args);
+      log(level, clazz, t, msgFormat, args);
     } else {
-      Log.log(level, clazz, msgFormat, args);
+      log(level, clazz, msgFormat, args);
     }
   }
 

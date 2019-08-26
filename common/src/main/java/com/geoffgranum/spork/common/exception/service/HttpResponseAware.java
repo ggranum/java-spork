@@ -4,7 +4,7 @@
  * Copyright (c) 2019 Geoff M. Granum
  */
 
-package com.geoffgranum.spork.servlet.exception;
+package com.geoffgranum.spork.common.exception.service;
 
 /**
  * @author Geoff M. Granum

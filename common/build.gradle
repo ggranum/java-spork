@@ -4,84 +4,102 @@
  * Copyright (c) 2015 Geoff M. Granum
  */
 
-apply plugin: 'java'
-apply plugin: 'maven-publish'
 
+plugins {
+    id  'java'
+    id 'maven-publish'
+    id 'com.jfrog.bintray'
+}
 
-version = project['project.version']
+version = rootProject['project.version']
 group = 'com.geoffgranum.spork'
 
-configurations {
-    provided
+
+repositories {
+    maven {
+        url  "https://dl.bintray.com/ggranum/spork"
+    }
 }
 
 
 dependencies {
-    implementation "commons-io:commons-io:${project['versions.commonsIo']}"
-    implementation "org.apache.commons:commons-lang3:${project['versions.commonsLang3']}"
-    implementation "org.apache.httpcomponents:httpcore:${project['versions.httpcore']}"
-    implementation "commons-codec:commons-codec:${project['versions.commonsCodec']}"
 
-    implementation "com.google.guava:guava:${project['versions.guava']}"
+
+    implementation "commons-io:commons-io:${project['versions.commonsIo']}"
+    implementation "commons-codec:commons-codec:${project['versions.commonsCodec']}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${project['versions.jackson']}"
+
     implementation "com.google.code.findbugs:jsr305:${project['versions.findbugs']}"
+    implementation "com.google.guava:guava:${project['versions.guava']}"
+    implementation "com.google.inject:guice:${rootProject['versions.guice']}"
+
+    implementation "org.apache.commons:commons-lang3:${project['versions.commons-lang3']}"
+    implementation "org.apache.httpcomponents:httpcore:${project['versions.httpcore']}"
 
     implementation "org.apache.logging.log4j:log4j-api:${project['versions.log4j']}"
     runtime "org.apache.logging.log4j:log4j-core:${project['versions.log4j']}"
     runtime "org.apache.logging.log4j:log4j-jcl:${project['versions.log4j']}"
 
-    implementation "com.fasterxml.jackson.core:jackson-databind:${project['versions.jackson']}"
     implementation "org.hibernate.validator:hibernate-validator:${project['versions.hibernateValidator']}"
+
 
     testImplementation "org.testng:testng:${project['versions.testNg']}"
     testImplementation "org.mockito:mockito-core:${project['versions.mockito']}"
     testImplementation "org.hamcrest:hamcrest-all:${project['versions.hamcrest']}"
 }
 
-
-sourceSets {
-    main.compileClasspath += configurations.provided;
-    test.compileClasspath += configurations.provided;
-    test.runtimeClasspath += configurations.provided;
-}
-javadoc.classpath = sourceSets.main.compileClasspath;
 javadoc.options({
     addStringOption('tag', 'todo')
 })
 
 jar {
-    baseName = "spork-common"
+    baseName = project.name
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
 
 artifacts {
     archives sourcesJar
-    archives javadocJar
 }
 
 
 publishing {
     publications {
+        binTrayPublication(MavenPublication) {
+            artifact jar
+            artifact sourcesJar
+            groupId group
+            artifactId project.name
+            version version
+        }
+
         archives(MavenPublication) {
             artifact jar
             artifact sourcesJar
-            artifact javadocJar
         }
     }
-    repositories {
-        //        maven {
-//            url rootProject["yourRepo.url"]
-//            credentials {
-//                username = rootProject["yourRepo.username"]
-//                password = rootProject["yourRepo.password"]
-//            }
-//        }
+}
+
+
+
+bintray {
+    user = project['project.bintray.username']
+    key = project['project.bintray.apiKey']
+    publications = ['binTrayPublication']
+    publish = true
+    pkg {
+        repo = 'spork'
+        name = project.name
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/ggranum/java-spork.git'
+        version {
+            name = version
+            desc = 'Common utility code for client server projects'
+            released  = new Date()
+            vcsTag = version
+        }
     }
 }

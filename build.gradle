@@ -6,6 +6,14 @@
 
 import com.geoffgranum.gradle.BuildProps
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
+    }
+}
 
 wrapper {
     distributionType = Wrapper.DistributionType.ALL
@@ -15,14 +23,16 @@ wrapper {
 apply plugin: BuildProps
 
 
-buildProps.source("${project.rootDir}/gradle.local.properties");
+buildProps.source("${project.rootDir}/gradle.local.properties")
 buildProps.required("build.env");
 buildProps.required(["project.version"])
+buildProps.required(["project.bintray.username"])
+buildProps.required(["project.bintray.apiKey"])
+
 
 buildProps.optional([])
 
 subprojects {
-
     configurations.all({
         exclude(module: 'slf4j-simple')
         resolutionStrategy { ->
@@ -35,7 +45,7 @@ subprojects {
             force("org.hibernate:hibernate-validator:${project['versions.hibernateValidator']}",
                     "com.google.guava:guava:${project['versions.guava']}",
                     "commons-codec:commons-codec:${project['versions.commonsCodec']}",
-                    "commons-lang:commons-lang3:${project['versions.commonsLang3']}",
+                    "commons-lang:commons-lang3:${project['versions.commons-lang3']}",
                     "commons-io:commons-io:${project['versions.commonsIo']}",
                     "org.slf4j:slf4j-api:${project['versions.slf4j']}",
                     "com.fasterxml.jackson.core:jackson-annotations:${project['versions.jackson']}",
@@ -74,6 +84,7 @@ subprojects {
 }
 
 subprojects {
+
     if(project.hasProperty('test')) {
         test { ->
             // enable TestNG support (default is JUnit)
@@ -82,3 +93,5 @@ subprojects {
         }
     }
 }
+
+

@@ -5,6 +5,7 @@
  */
 package com.geoffgranum.spork.servlet.exception;
 
+import com.geoffgranum.spork.common.exception.service.ServiceException;
 import com.geoffgranum.spork.common.log.Level;
 import com.geoffgranum.spork.common.log.Log;
 import javax.ws.rs.core.Response;

@@ -11,10 +11,6 @@ apply plugin: 'maven-publish'
 version = project['project.version']
 group = 'com.geoffgranum.spork'
 
-configurations {
-    provided
-}
-
 
 dependencies {
     compile project(":common")
@@ -24,22 +20,11 @@ dependencies {
 }
 
 
-sourceSets {
-    main.compileClasspath += configurations.provided;
-    test.compileClasspath += configurations.provided;
-    test.runtimeClasspath += configurations.provided;
-}
-
 test {
     // enable TestNG support (default is JUnit)
     useTestNG()
     workingDir "${rootProject.rootDir}"
 }
-
-javadoc.classpath = sourceSets.main.compileClasspath;
-javadoc.options({
-    addStringOption('tag', 'todo')
-})
 
 jar {
     baseName = "spork-common-example"
@@ -49,14 +34,9 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
 
 artifacts {
     archives sourcesJar
-    archives javadocJar
 }
 
 
@@ -65,7 +45,6 @@ publishing {
         archives(MavenPublication) {
             artifact jar
             artifact sourcesJar
-            artifact javadocJar
         }
     }
     repositories {

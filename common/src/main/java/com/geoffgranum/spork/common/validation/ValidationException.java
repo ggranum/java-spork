@@ -6,14 +6,14 @@
 
 package com.geoffgranum.spork.common.validation;
 
-import com.geoffgranum.spork.common.exception.ServiceException;
+import com.geoffgranum.spork.common.exception.FormattedException;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 
 /**
  * @author Geoff M. Granum
  */
-public class ValidationException extends ServiceException {
+public class ValidationException extends FormattedException {
 
   private static final long serialVersionUID = 1L;
   transient public final Validated builder;
@@ -29,7 +29,12 @@ public class ValidationException extends ServiceException {
   private static String createMessage(Set<ConstraintViolation<Validated>> violations) {
     StringBuilder sb = new StringBuilder();
     for (ConstraintViolation<Validated> violation : violations) {
-      sb.append("\n\t").append(violation.getMessage().replace("'${validatedValue}'", String.valueOf(violation.getInvalidValue())));
+      sb.append("\n\t");
+      String msg = violation.getMessage();
+      if(!msg.contains(violation.getPropertyPath().toString())){
+        sb.append(violation.getPropertyPath().toString()).append(" cannot be set to '").append(violation.getInvalidValue()).append("': ");
+      }
+      sb.append(msg);
     }
 
     return sb.toString();
