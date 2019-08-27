@@ -5,13 +5,9 @@
  */
 package com.geoffgranum.spork.servlet;
 
-import com.geoffgranum.spork.common.base.Initializer;
 import com.geoffgranum.spork.common.log.Log;
-import com.geoffgranum.spork.servlet.bootstrap.ApplicationInitializer;
 import com.geoffgranum.spork.servlet.exception.ServiceExceptionMapper;
-import com.geoffgranum.spork.servlet.initialization.InitializationChain;
 import com.google.common.collect.Maps;
-import com.google.inject.Scopes;
 import com.google.inject.servlet.ServletModule;
 import java.util.Map;
 import java.util.Optional;
@@ -97,7 +93,5 @@ public abstract class GuiceResteasyServletModule extends ServletModule {
       serve("/rest-js").with(JSAPIServlet.class);
     }
   }
-
-
 }
  

@@ -23,6 +23,15 @@ public class FormattedException extends RuntimeException implements CustomFaultC
   private String customFaultCode;
 
   /**
+   * Defaulting to true is tough call. The majority of exceptions should not log stack traces (because you're creating lots of exception types, right?
+   * and adding good exception messages too, right?). However, in those cases where the exception is not well understood, having a stack will make debugging
+   * much, much easier.
+   *
+   * Subclasses that are thrown regularly and are well defined can override the default at the constructor level easily enough.
+   */
+  private boolean shouldPrintStack = true;
+
+  /**
    * Required for Verify methods that accept an exception class.
    */
   public FormattedException(String message) {
@@ -63,20 +72,45 @@ public class FormattedException extends RuntimeException implements CustomFaultC
     return this;
   }
 
-  public void log() {
-    if(!hasBeenLogged.get()) {
-      hasBeenLogged.set(true);
+  /**
+   * Log the exception, printing the stack trace only if 'shouldPrintStackTrace' is true, and 'hasBeenLogged' is false.
+   * Will not log if this exception has had one of its log methods called previously.
+   */
+  public FormattedException log() {
+    if(!hasBeenLogged.getAndSet(true)) {
       Log.log(getLogLevel(), shouldPrintStack(), getThrowingClassName(), this, getLogMessage());
     }
+    return this;
+  }
+
+  /**
+   * Force this exception to be logged, including the entire stack trace. Will not log if this exception has had one of its log methods called previously.
+   */
+  public FormattedException logWithTrace() {
+    if(!hasBeenLogged.getAndSet(true)) {
+      Log.log(getLogLevel(), true, getThrowingClassName(), this, getLogMessage());
+    }
+    return this;
   }
 
   public Level getLogLevel() {
     return Level.ERROR;
   }
 
-  public boolean shouldPrintStack() {
-    return true;
+  public FormattedException enableStackTrace() {
+    this.shouldPrintStack = true;
+    return this;
   }
+
+  public FormattedException disableStackTrace() {
+    this.shouldPrintStack = false;
+    return this;
+  }
+
+  public boolean shouldPrintStack() {
+    return this.shouldPrintStack;
+  }
+
 
   public String getLogMessage() {
     return getMessage();
