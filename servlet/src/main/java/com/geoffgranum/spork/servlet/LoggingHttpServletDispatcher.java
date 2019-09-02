@@ -45,13 +45,13 @@ public class LoggingHttpServletDispatcher extends HttpServletDispatcher {
     try {
       Log.trace(getClass(), "Servicing request: %s", httpServletRequest.getRequestURL());
     } catch (Exception e) {
-      Log.error(getClass(), "Logging produced an error.", e);
+      Log.error(getClass(), e, "Logging produced an error.");
     }
     super.service(httpServletRequest, httpServletResponse);
     try {
       Log.trace(getClass(), "Request serviced: %s", httpServletRequest.getRequestURL());
     } catch (Exception e) {
-      Log.error(getClass(), "Logging produced an error.", e);
+      Log.error(getClass(), e, "Logging produced an error.");
     }
   }
 
@@ -61,7 +61,7 @@ public class LoggingHttpServletDispatcher extends HttpServletDispatcher {
     try {
       Log.trace(getClass(), "Servicing request: %s, %s", httpMethod, request.getRequestURL());
     } catch (Exception e) {
-      Log.error(getClass(), "Logging produced an error.", e);
+      Log.error(getClass(), e, "Logging produced an error.");
     }
     try {
       super.service(httpMethod, request, response);
@@ -76,7 +76,7 @@ public class LoggingHttpServletDispatcher extends HttpServletDispatcher {
         }
       }
     } catch (Exception e) {
-      Log.error(getClass(), "Logging produced an error.", e);
+      Log.error(getClass(), e, "Logging produced an error.");
     }
   }
 
@@ -91,7 +91,7 @@ public class LoggingHttpServletDispatcher extends HttpServletDispatcher {
     try {
       Log.trace(getClass(), "Create Resteasy Http Request: %s", request.getRequestURL());
     } catch (Exception e) {
-      Log.error(getClass(), "Logging produced an error.", e);
+      Log.error(getClass(), e, "Logging produced an error.");
     }
     return super.createResteasyHttpRequest(httpMethod, request, headers, uriInfo, theResponse, response);
   }
@@ -125,7 +125,7 @@ public class LoggingHttpServletDispatcher extends HttpServletDispatcher {
     try {
       Log.trace(getClass(), "doGet %s", req.getRequestURL());
     } catch (Exception e) {
-      Log.error(getClass(), "Logging produced an error.", e);
+      Log.error(getClass(), e, "Logging produced an error.");
     }
     super.doGet(req, resp);
   }
@@ -145,7 +145,7 @@ public class LoggingHttpServletDispatcher extends HttpServletDispatcher {
     try {
       Log.trace(getClass(), "doPost %s", req.getRequestURL());
     } catch (Exception e) {
-      Log.error(getClass(), "Logging produced an error.", e);
+      Log.error(getClass(), e, "Logging produced an error.");
     }
     super.doPost(req, resp);
   }
@@ -155,7 +155,7 @@ public class LoggingHttpServletDispatcher extends HttpServletDispatcher {
     try {
       Log.trace(getClass(), "doPut %s", req.getRequestURL());
     } catch (Exception e) {
-      Log.error(getClass(), "Logging produced an error.", e);
+      Log.error(getClass(), e, "Logging produced an error.");
     }
     super.doPut(req, resp);
   }

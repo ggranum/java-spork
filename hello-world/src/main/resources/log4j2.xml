@@ -55,6 +55,8 @@
     <Logger name="org.jboss.resteasy.core.ExceptionHandler" level="off" additivity="true"/>
     <Logger name="javax.jaxrs.rs" level="info" additivity="true"/>
     <Logger name="org.jboss.resteasy.plugins.providers.DocumentProvider" level="warn" additivity="true"/>
+    <!-- Changing the log level for HelloWorldResourceImpl will break the logging performance testing endpoint. -->
+    <Logger name="com.geoffgranum.spork.helloworld.resource.HelloWorldResourceImpl" level="debug" additivity="true"/>
     <Logger name="com.geoffgranum" level="trace" additivity="true"/>
     <Root level="info">
       <AppenderRef ref="fileLogger"/>

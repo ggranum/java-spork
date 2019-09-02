@@ -6,6 +6,7 @@
 
 package com.geoffgranum.spork.helloworld.resource;
 
+import com.geoffgranum.spork.helloworld.domain.ServerPerformanceInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -30,6 +31,10 @@ public interface HelloWorldResource {
   @Path("/version")
   @Produces(MediaType.TEXT_PLAIN)
   String version();
+
+  @GET()
+  @Path("/performance/{anyValue}")
+  ServerPerformanceInfo perfCheck(@PathParam("anyValue") String anyValue);
 }
 
 

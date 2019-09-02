@@ -29,12 +29,12 @@ public class LoggingGuiceFilter extends GuiceFilter {
     try {
       Log.trace(getClass(), "Filtering request: %s", ((HttpServletRequest)servletRequest).getRequestURL());
     } catch (Exception e) {
-      Log.error(getClass(), "Bad Log. No donut.", e);
+      Log.error(getClass(), e, "Bad Log. No donut.");
     }
     try {
       super.doFilter(servletRequest, servletResponse, filterChain);
     } catch (IOException | ServletException e) {
-      Log.error(getClass(), "Error filtering request. ", e);
+      Log.error(getClass(), e, "Error filtering request. ");
       throw e;
     } catch (NotFoundException e) {
       throw new NotFoundException("Did you forget to add a binding in your servlet module? " + e.getMessage(), e);
@@ -43,7 +43,7 @@ public class LoggingGuiceFilter extends GuiceFilter {
     try {
       Log.trace(getClass(), "Request filtered: %s", ((HttpServletRequest)servletRequest).getRequestURL());
     } catch (Exception e) {
-      Log.error(getClass(), "Bad Log. No donut.", e);
+      Log.error(getClass(), e, "Bad Log. No donut.");
     }
   }
 
@@ -53,7 +53,7 @@ public class LoggingGuiceFilter extends GuiceFilter {
     try {
       super.init(filterConfig);
     } catch (ServletException e) {
-      Log.error(getClass(), "Error while initializing filter.", e);
+      Log.error(getClass(), e, "Error while initializing filter.");
       throw e;
     }
     Log.trace(getClass(), "Filter initialized.");
@@ -65,7 +65,7 @@ public class LoggingGuiceFilter extends GuiceFilter {
     try {
       super.destroy();
     } catch (RuntimeException e) {
-      Log.error(getClass(), "Error while destroying filter.", e);
+      Log.error(getClass(), e, "Error while destroying filter.");
       throw e;
     }
     Log.trace(getClass(), "Filter destroyed.");
