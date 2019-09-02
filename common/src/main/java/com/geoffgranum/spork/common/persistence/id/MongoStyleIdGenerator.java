@@ -83,7 +83,7 @@ public final class MongoStyleIdGenerator implements IdGenerator {
       byte[] name = ManagementFactory.getRuntimeMXBean().getName().getBytes(Charset.forName("UTF-8"));
       return MessageDigest.getInstance("MD5").digest(name);
     } catch (NoSuchAlgorithmException e) {
-      Log.error(MongoStyleIdGenerator.class, "Could not calculate a process ID hash.", e);
+      Log.error(MongoStyleIdGenerator.class, e, "Could not calculate a process ID hash.");
       throw new RuntimeException(e);
     }
   }
@@ -95,7 +95,7 @@ public final class MongoStyleIdGenerator implements IdGenerator {
       byte[] mac = network.getHardwareAddress();
       return MessageDigest.getInstance("MD5").digest(mac);
     } catch (Exception e) {
-      Log.error(MongoStyleIdGenerator.class, "Could not calculate machine ID hash.", e);
+      Log.error(MongoStyleIdGenerator.class, e, "Could not calculate machine ID hash.");
       throw new RuntimeException(e);
     }
   }

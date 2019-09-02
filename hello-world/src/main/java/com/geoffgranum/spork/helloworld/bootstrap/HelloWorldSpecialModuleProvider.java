@@ -6,6 +6,7 @@
 
 package com.geoffgranum.spork.helloworld.bootstrap;
 
+import com.geoffgranum.spork.common.log.intercept.LoggingInterceptionModule;
 import com.geoffgranum.spork.servlet.bootstrap.BootstrapConfiguration;
 import com.geoffgranum.spork.servlet.bootstrap.Env;
 import com.geoffgranum.spork.servlet.bootstrap.ModuleProvider;
@@ -20,6 +21,6 @@ public class HelloWorldSpecialModuleProvider implements ModuleProvider {
 
   @Override
   public Set<Module> get(Env env, BootstrapConfiguration baseConfiguration) {
-    return ImmutableSet.of(new HelloWorldProductionModule(env));
+    return ImmutableSet.of(new HelloWorldProductionModule(env), new LoggingInterceptionModule());
   }
 }
