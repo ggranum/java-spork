@@ -36,6 +36,10 @@ public class ServiceException extends FormattedException implements HttpResponse
     this(null, msgFormat, args);
   }
 
+  public ServiceException(Throwable cause) {
+    this(cause, STATUS_CODE_UNSET, cause.getMessage());
+  }
+
   public ServiceException(Throwable cause, String msgFormat, Object... args) {
     this(cause, STATUS_CODE_UNSET, msgFormat, args);
   }
