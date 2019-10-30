@@ -53,7 +53,7 @@ public final class BasicClientConfiguration implements RestClientConfig {
 
   @Override
   public String username() {
-    return null;
+    return userName;
   }
 
   @Override

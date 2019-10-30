@@ -18,11 +18,15 @@ public class LoggingInterceptor implements MethodInterceptor {
   @Override
   public Object invoke(MethodInvocation invocation) throws Throwable {
     Object result;
+    Intercept intercept = null;
     try {
-      Intercept intercept = getDetails(invocation);
-      result = intercept.enabled ? doInvoke(invocation, intercept) : invocation.proceed();
+      intercept = getDetails(invocation);
     } catch (Exception e) {
       Log.error(getClass(), e, "Error performing interceptor logging, proceeding without logging.");
+    }
+    if(intercept != null && intercept.enabled) {
+      result = doInvoke(invocation, intercept);
+    } else {
       result = invocation.proceed();
     }
     return result;

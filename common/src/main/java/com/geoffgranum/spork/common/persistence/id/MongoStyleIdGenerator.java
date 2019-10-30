@@ -95,7 +95,10 @@ public final class MongoStyleIdGenerator implements IdGenerator {
     try {
       InetAddress ip = InetAddress.getLocalHost();
       NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-      byte[] mac = network.getHardwareAddress();
+      byte[] mac = null;
+      if(network != null) {
+        mac = network.getHardwareAddress();
+      }
       if(mac == null) {
         Log.warn(MongoStyleIdGenerator.class,
                  "Could not retrieve mac address from localHost ip address. This is unusual. Using first MAC found in network interfaces.");
