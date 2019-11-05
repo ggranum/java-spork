@@ -11,9 +11,11 @@ import com.geoffgranum.spork.common.base.Verify;
 import com.geoffgranum.spork.common.exception.FatalException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import javax.inject.Inject;
+import org.apache.commons.io.IOUtils;
 
 /**
  * @author ggranum
@@ -41,6 +43,10 @@ public class JsonConfigurationReader {
   public <T> T read(File jsonFile, T typeInstance) {
     //noinspection unchecked
     return (T)this.read(jsonFile, typeInstance.getClass());
+  }
+
+  public <T> T read(InputStream jsonStream, Class<T> type) throws IOException {
+    return this.mapper.readValue(jsonStream, type);
   }
 
   public <T> T read(File jsonFile, Class<T> type) {
