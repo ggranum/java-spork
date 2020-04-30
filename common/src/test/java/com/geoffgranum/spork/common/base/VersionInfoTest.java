@@ -17,6 +17,17 @@ import static org.hamcrest.Matchers.*;
 public class VersionInfoTest {
 
   @Test
+  public void testIgnoresNewLines() {
+    String test = "1.2.3\n";
+    VersionInfo info = new VersionInfo.Builder().fromVersionString(test).build();
+    assertThat(info.majorVersion, is(1));
+    assertThat(info.minorVersion, is(2));
+    assertThat(info.pointVersion, is(3));
+    assertThat(info.buildNumber, is(0));
+    assertThat(info.buildEnvironment.isPresent(), is(false));
+  }
+
+  @Test
   public void testMajorMinorPoint() {
     String test = "1.2.3";
     VersionInfo info = new VersionInfo.Builder().fromVersionString(test).build();
