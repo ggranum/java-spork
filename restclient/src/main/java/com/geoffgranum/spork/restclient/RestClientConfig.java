@@ -5,6 +5,8 @@
  */
 package com.geoffgranum.spork.restclient;
 
+import org.apache.commons.lang3.StringUtils;
+
 public interface RestClientConfig {
 
   String username();
@@ -17,12 +19,17 @@ public interface RestClientConfig {
 
   int port();
 
+  default String basePath() {
+    return "";
+  }
+
   default String protocol() {
     return "http" + (isHttps() ? "s" : "");
   }
 
   default String serviceUri() {
-    return String.format("%s://%s:%s", protocol(), host(), port());
+    String basePath = basePath();
+    return String.format("%s://%s:%s%s", protocol(), host(), port(), StringUtils.isNotEmpty(basePath) ? '/' + basePath : "");
   }
 }
  
